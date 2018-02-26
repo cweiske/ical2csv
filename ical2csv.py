@@ -53,7 +53,10 @@ def process(ics_string, end_date, start_date=None, include_full_day=False):
             continue
 
         item['SUMMARY'] = item['SUMMARY'].replace(',', ';')
-        item['LOCATION'] = item['LOCATION'].replace(',', ';')
+        if item.has_key('LOCATION'):
+            item['LOCATION'] = item['LOCATION'].replace(',', ';')
+        else:
+            item['LOCATION'] = ''
 
         yield ','.join(str(item[key].dt)
                        if hasattr(item[key], 'dt')
