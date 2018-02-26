@@ -1,6 +1,6 @@
 import argparse
 import copy
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, time, timedelta
 import itertools
 import sys
 
@@ -48,6 +48,11 @@ def process(ics_string, end_date, start_date=None, include_full_day=False):
         if (isinstance(item_start, date) and not isinstance(item_start, datetime)
             and not include_full_day):
             continue
+
+        if not isinstance(item_start, datetime):
+            item_start = datetime.combine(item_start, time(0, 0, 0, 0, start_date.tzinfo))
+        if not isinstance(item_end, datetime):
+            item_end = datetime.combine(item_end, time(23, 59, 59, 0, end_date.tzinfo))
 
         if (start_date is not None and start_date > item_start) or end_date < item_end:
             continue
